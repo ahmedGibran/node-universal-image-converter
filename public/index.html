@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniversalImageConverter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    #converter {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="file"] {
+      display: block;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #output {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="converter">
+    <h1>UniversalImageConverter</h1>
+    <!-- <p>This application is made by <a href="https://www.linkedin.com/in/ahmed-gibran-593236181/?original_referer=https%3A%2F%2Fwww%2Egoogle%2Ecom%2F&originalSubdomain=de">Ahmed Gibran</a>.</p> -->
+    <div class="input-group">
+      <label for="fileInput">Choose a zip file of images:</label>
+      <input type="file" id="fileInput" accept=".zip">
+    </div>
+    <button onclick="uploadFile()">Convert to WebP</button>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    async function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      const output = document.getElementById('output');
+      const file = fileInput.files[0];
+      
+      if (!file) {
+        output.textContent = 'Please select a file.';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('/convert', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          output.innerHTML = `<a href="${url}" download="${file.name.split('.')[0]}.zip">Download converted WebP images</a>`;
+        } else {
+          output.textContent = 'Conversion failed. Please try again.';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        output.textContent = 'An error occurred. Please try again.';
+      }
+    }
+  </script>
+</body>
+</html>
