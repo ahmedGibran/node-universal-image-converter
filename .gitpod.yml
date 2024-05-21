@@ -1,5 +1,9 @@
+# .gitpod.yml
+
 tasks:
-  - init: npm install
+  - init: |
+      npm install
+      npm install --include=optional sharp
   - command: npm start
 ports:
   - port: 3000
