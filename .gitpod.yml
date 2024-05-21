@@ -2,6 +2,7 @@
 
 tasks:
   - init: |
+      npm install -g npm@latest
       npm install
       npm install --include=optional sharp
   - command: npm start
