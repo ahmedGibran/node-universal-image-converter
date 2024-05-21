@@ -14,6 +14,7 @@
     "archiver": "^7.0.1",
     "express": "^4.19.2",
     "express-fileupload": "^1.5.0",
+    "multer": "^1.4.5-lts.1",
     "sharp": "^0.33.4",
     "yauzl": "^3.1.3"
   },
